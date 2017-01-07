@@ -57,18 +57,15 @@ public class MainActivityFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);  //设置有选项菜单
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
         if (isOnline()) {
             updateMovie();
         } else {
             Toast.makeText(getActivity(), "网络连接没有打开", Toast.LENGTH_LONG).show();
         }
+        setHasOptionsMenu(true);  //设置有选项菜单
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
