@@ -11,6 +11,6 @@
 
     <string name="pref_sort_label_vote_average">最高评分</string>
     <string name="pref_sort_label_popularity">最受欢迎</string>
-    <string name="pref_sort_vote_average">average</string>
-    <string name="pref_sort_popularity">popularity</string>
+    <string name="pref_sort_top_rated">top_rated</string>
+    <string name="pref_sort_popularity">popular</string>
 </resources>

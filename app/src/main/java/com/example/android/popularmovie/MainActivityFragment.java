@@ -39,8 +39,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -119,10 +117,13 @@ public class MainActivityFragment extends Fragment {
 
     private void updateMovie() {
         MovieTask movieTask = new MovieTask();
-        movieTask.execute();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String sortType = prefs.getString(getString(R.string.pref_sort_key),
+                getString(R.string.pref_sort_popularity));
+        movieTask.execute(sortType);
     }
 
-    public class MovieTask extends AsyncTask<Void, Void, ArrayList<Movie>> {
+    public class MovieTask extends AsyncTask<String, Void, ArrayList<Movie>> {
         private final String LOG_TAG = MovieTask.class.getSimpleName();
 
 
@@ -144,53 +145,28 @@ public class MainActivityFragment extends Fragment {
                 m.setPopularity(movieArray.getJSONObject(i).getDouble("popularity"));
                 arraylist.add(m);
             }
-            SharedPreferences sharedPrefs =
-                    PreferenceManager.getDefaultSharedPreferences(getActivity());
-            final String sort = sharedPrefs.getString(
-                    getString(R.string.pref_sort_key),
-                    getString(R.string.pref_sort_popularity));//第一次默认值
-            System.out.println(sort);
-            if (arraylist != null) {
-                Collections.sort(arraylist, new Comparator<Movie>() {
-                    @Override
-                    public int compare(Movie o1, Movie o2) {
-                        if (sort.equals(getString(R.string.pref_sort_popularity))) {
-                            if (o1.getPopularity() > o2.getPopularity()) {
-                                return -1;
-                            } else if (o1.getPopularity() < o2.getPopularity()) {
-                                return 1;
-                            }
-                        } else if (sort.equals(getString(R.string.pref_sort_vote_average))) {
-                            if (o1.getVote_average() > o2.getVote_average()) {
-                                return -1;
-                            } else if (o1.getVote_average() < o2.getVote_average()) {
-                                return 1;
-                            }
-                        }
-                        return 0;
-                    }
-                });
-            }
             return arraylist;
-
-
         }
 
         @Override
-        protected ArrayList<Movie> doInBackground(Void... params) {
+        protected ArrayList<Movie> doInBackground(String... params) {
 
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;//缓冲读者
 
             try {
-                final String MOVIE_BASE_URL =
-                        "http://api.themoviedb.org/3/movie/top_rated?language=zh";
+                final String MOVIE_BASE_URL = "http://api.themoviedb.org/3/movie/";
+                       // "http://api.themoviedb.org/3/movie/top_rated?language=zh";
 
                 final String APPID_PARAM = "api_key";
 
                 Uri builtUri = Uri.parse(MOVIE_BASE_URL).buildUpon()
+                        .appendPath(params[0])
+                        .appendQueryParameter("language","zh")
                         .appendQueryParameter(APPID_PARAM, BuildConfig.Movie_API_KEY)
+
                         .build();
+                System.out.println(builtUri.toString());
                 URL url = new URL(builtUri.toString());
                 //  Log.v(LOG_TAG, "Built URI " + builtUri.toString());
                 // Create the request to OpenWeatherMap, and open the connection
