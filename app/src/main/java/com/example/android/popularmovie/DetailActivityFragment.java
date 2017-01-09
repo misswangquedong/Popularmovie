@@ -14,12 +14,25 @@ import com.example.android.popularmovie.bean.Movie;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 /**
  * A placeholder fragment containing a simple view.
  */
 public class DetailActivityFragment extends Fragment {
-
-    private View rootView;
+    private Unbinder unbinder;
+    @BindView(R.id.detail_fragment_title)
+    TextView title;
+    @BindView(R.id.detail_fragment_poster)
+    ImageView poster_image;
+    @BindView(R.id.detail_fragment_overview)
+    TextView overview;
+    @BindView(R.id.detail_fragment_release_date)
+    TextView release_date;
+    @BindView(R.id.detail_fragment_vote_average)
+    TextView vote_average;
     private Movie m;
 
     @Override
@@ -31,11 +44,11 @@ public class DetailActivityFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        rootView = inflater.inflate(R.layout.fragment_detail, container, false);
+        View rootView= inflater.inflate(R.layout.fragment_detail, container, false);
+        unbinder=ButterKnife.bind(this, rootView);
         Intent intent = getActivity().getIntent();
         if (intent != null && intent.hasExtra("MOVIEOBJECT")) {
-            m = (Movie) intent.getSerializableExtra("MOVIEOBJECT");
+            m = (Movie) intent.getParcelableExtra("MOVIEOBJECT");
             if (m != null) {
                 initView(m);
             }
@@ -47,17 +60,12 @@ public class DetailActivityFragment extends Fragment {
     初始化view
      */
     private void initView(Movie m) {
-        TextView title = (TextView) rootView.findViewById(R.id.detail_fragment_title);
         title.setText(m.getTitle());
-        ImageView poster_image = (ImageView) rootView.findViewById(R.id.detail_fragment_poster);
-        TextView overview = (TextView) rootView.findViewById(R.id.detail_fragment_overview);
         overview.setText(m.getOverview());
-        TextView release_date = (TextView) rootView.findViewById(R.id.detail_fragment_release_date);
         release_date.setText(m.getRelease_date());
-        TextView vote_average = (TextView) rootView.findViewById(R.id.detail_fragment_vote_average);
         vote_average.setText(m.getVote_average() + " 分");
         Picasso.with(getActivity())
-                .load("https://image.tmdb.org/t/p/w500"+m.getPoster())
+                .load("https://image.tmdb.org/t/p/w500" + m.getPoster())
                 .placeholder(R.mipmap.ic_launcher)
                 .into(poster_image, new Callback() {
                     @Override
@@ -72,4 +80,9 @@ public class DetailActivityFragment extends Fragment {
                 });
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
 }
