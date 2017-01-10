@@ -119,6 +119,7 @@ public class MainActivityFragment extends Fragment {
     public class FetchMyDataTaskCompleteListener implements AsyncTaskCompleteListener<ArrayList<Movie>> {
         @Override
         public void onTaskComplete(ArrayList<Movie> result) {
+            arrayList=result;
             movieAdapter = new MovieAdapter(getActivity(), result);
             gridView.setAdapter(movieAdapter);
         }
