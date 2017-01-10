@@ -60,7 +60,7 @@ public class MovieAdapter extends BaseAdapter {
         }
 
         Picasso.with(context)
-                .load("https://image.tmdb.org/t/p/w500" + arrayList.get(position).getPoster())
+                .load("https://image.tmdb.org/t/p/w500" + arrayList.get(position).getPoster_path())
                 .placeholder(R.mipmap.ic_launcher)
                 .into(holder.poster_image, new Callback() {
                     @Override

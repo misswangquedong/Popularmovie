@@ -9,27 +9,19 @@ import android.os.Parcelable;
 
 public class Movie implements Parcelable {
     private String title;//片名
-    private String poster;//ctrl+shift+u大小写转换
+    private String poster_path;//ctrl+shift+u大小写转换
     private String overview;//概观
     private double vote_average;//平均投票
+
     private String release_date;//上映日期
     private double popularity;//最受欢迎
-
-    public Movie(String title, String poster, String overview, double vote_average, String release_date, double popularity) {
-        this.title = title;
-        this.poster = poster;
-        this.overview = overview;
-        this.vote_average = vote_average;
-        this.release_date = release_date;
-        this.popularity = popularity;
-    }
 
     public String getTitle() {
         return title;
     }
 
-    public String getPoster() {
-        return poster;
+    public String getPoster_path() {
+        return poster_path;
     }
 
     public String getOverview() {
@@ -44,13 +36,11 @@ public class Movie implements Parcelable {
         return release_date;
     }
 
-    public double getPopularity() {
-        return popularity;
-    }
+
 
     protected Movie(Parcel in) {
         title = in.readString();
-        poster = in.readString();
+        poster_path = in.readString();
         overview = in.readString();
         vote_average = in.readDouble();
         release_date = in.readString();
@@ -77,7 +67,7 @@ public class Movie implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(title);
-        dest.writeString(poster);
+        dest.writeString(poster_path);
         dest.writeString(overview);
         dest.writeDouble(vote_average);
         dest.writeString(release_date);

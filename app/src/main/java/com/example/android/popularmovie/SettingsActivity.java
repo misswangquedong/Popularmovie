@@ -1,27 +1,72 @@
 package com.example.android.popularmovie;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
-import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBar;
+import android.view.MenuItem;
+
+import com.example.android.popularmovie.baseClass.AppCompatPreferenceActivity;
 
 /**
  * Created by Administrator on 2017/1/6.
  */
 
-public class SettingsActivity extends PreferenceActivity
+public class SettingsActivity extends AppCompatPreferenceActivity
         implements Preference.OnPreferenceChangeListener{
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+       // addPreferencesFromResource(R.xml.preferences);
+
         // Add 'general' preferences, defined in the XML file
         addPreferencesFromResource(R.xml.pref_general);
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_sort_key)));
-        // For all preferences, attach an OnPreferenceChangeListener so the UI summary can be
-        // updated when the preference changes.
+
+        setupActionBar();
+        System.out.println("SettingsActivity：onCreate执行了");
+
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        System.out.println("SettingsActivity：onStart执行了");
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        System.out.println("SettingsActivity：onResume执行了");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        System.out.println("SettingsActivity：onPause执行了");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        System.out.println("SettingsActivity：onStop执行了");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        System.out.println("SettingsActivity：onDestroy执行了");
+    }
+    private void setupActionBar() {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            // Show the Up button in the action bar.
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
     /**
      * Attaches a listener so the summary is always updated with the preference value.
      * Also fires the listener once, to initialize the summary (so it shows up before the value
@@ -59,5 +104,16 @@ public class SettingsActivity extends PreferenceActivity
             }
         }
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            startActivity(new Intent(this, MainActivity.class));
+           // finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

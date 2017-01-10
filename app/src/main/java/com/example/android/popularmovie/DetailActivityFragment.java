@@ -64,13 +64,13 @@ public class DetailActivityFragment extends Fragment {
         overview.setText(m.getOverview());
         release_date.setText(m.getRelease_date());
         vote_average.setText(m.getVote_average() + " 分");
+
         Picasso.with(getActivity())
-                .load("https://image.tmdb.org/t/p/w500" + m.getPoster())
+                .load("https://image.tmdb.org/t/p/w500" + m.getPoster_path())
                 .placeholder(R.mipmap.ic_launcher)
                 .into(poster_image, new Callback() {
                     @Override
                     public void onSuccess() {
-                        // Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
